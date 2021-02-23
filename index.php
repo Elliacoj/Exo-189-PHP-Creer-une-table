@@ -61,7 +61,42 @@
 
 // TODO Votre code ici.
 
+$server = "localhost";
+$db = "table_test_php";
+$user = "root";
+$pwd = "";
+
 try {
-    ...
+    $connec = new PDO("mysql:host=$server;dbname=$db;charset=utf8", $user, $pwd);
+    $connec->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $utilisateur = "
+        CREATE TABLE utilisateur (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            nom VARCHAR(50) NOT NULL,
+            prenom VARCHAR(50) NOT NULL,
+            email VARCHAR(100) NOT NULL UNIQUE,
+            password VARCHAR(100) NOT NULL,
+            adresse VARCHAR(100) NOT NULL,
+            code_postal INT(30) NOT NULL,
+            pays VARCHAR(50) NOT NULL,
+            date_joint DATETIME TIMESTAMP
+        )
+        ";
+
+    $produit = "
+    CREATE TABLE produit (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            titre VARCHAR(50) NOT NULL,
+            prix FLOAT NOT NULL,
+            description_courte VARCHAR(255),
+            description_longue TEXT,
+        )
+    ";
+
+    $connec->exec($utilisateur);
+    $connec->exec($produit);
 }
-catch...
+catch(PDOException $exception) {
+    echo "Erreur de connexion";
+}
